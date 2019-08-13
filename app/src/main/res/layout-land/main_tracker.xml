@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/topLayout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btn_switch_camera"
+        android:layout_width="47dp"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_switch_camera_black_24dp" />
+
+    <com.rozvi14.facialrecognition.camera.CameraSourcePreview
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.rozvi14.facialrecognition.camera.GraphicOverlay
+            android:id="@+id/faceOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.rozvi14.facialrecognition.camera.CameraSourcePreview>
+
+</RelativeLayout>
