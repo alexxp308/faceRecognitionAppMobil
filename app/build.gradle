@@ -1,14 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.rozvi14.facialrecognition"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -32,13 +33,19 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0-alpha1'
+    implementation 'com.google.firebase:firebase-messaging:19.0.0'
     testImplementation 'junit:junit:4.12'
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.google.android.gms:play-services-vision:15.0.2'
+    implementation 'com.android.support:design:28.0.0-alpha1'
+    implementation 'com.android.support:support-v13:28.0.0-alpha1'
+    implementation 'com.google.android.gms:play-services-vision:19.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation files('libs/httpclient-4.5.5.jar')
     implementation files('libs/httpcore-4.4.9.jar')
+    implementation 'com.pusher:pusher-java-client:2.0.1'
+    implementation 'com.pusher:push-notifications-android:0.9.12'
+    implementation "androidx.drawerlayout:drawerlayout:1.0.0"
 }
+
+apply plugin: 'com.google.gms.google-services'

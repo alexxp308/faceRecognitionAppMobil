@@ -27,10 +27,14 @@ public class RequestMethods {
     private static HttpClient httpclient = new DefaultHttpClient();
     private static Gson gson = new GsonBuilder().create();
 
-    public static GenericResult getMethod(String url){
+    public static GenericResult getMethod(String url, String token){
         GenericResult result = new GenericResult(false,0,"",null);
         HttpGet request = new HttpGet(url);
         Log.d(TAG, "request(GET): "+url);
+        if(token!=null){
+            request.addHeader("Authorization", "Token "+token);
+            Log.d(TAG, "Authorization: "+ "Token "+token);
+        }
         try{
             HttpResponse response = httpclient.execute(request);
             Log.d(TAG, "Response Code: "+response.getStatusLine().getStatusCode());

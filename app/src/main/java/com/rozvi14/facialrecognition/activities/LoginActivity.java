@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +16,9 @@ import com.rozvi14.facialrecognition.utils.RequestMethods;
 import com.rozvi14.facialrecognition.models.GenericResult;
 import com.rozvi14.facialrecognition.models.Login;
 import com.rozvi14.facialrecognition.utils.SaveSharedPreference;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Viaje Seguro</string>
+    <string name="app_name">Safe House</string>
     <string name="ok">OK</string>
     <string name="permission_camera_rationale">Accder a la camara es necesario</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
@@ -9,7 +9,7 @@
     <string name="hintUserName">Enter Name</string>
     <string name="login">Login</string>
     <string name="descriptionImageNav">Image Nav</string>
-    <string name="titleNav">Menu Viaje Seguro</string>
+    <string name="titleNav">Menu Safe House</string>
     <string name="logout">Logout</string>
     <string name="navigation_drawer_open">Drawer Open</string>
     <string name="navigation_drawer_close">Drawer Closed</string>

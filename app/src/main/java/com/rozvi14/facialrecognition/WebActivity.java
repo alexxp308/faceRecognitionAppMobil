@@ -1,9 +1,10 @@
 package com.rozvi14.facialrecognition;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class WebActivity extends AppCompatActivity {
 
