@@ -1,29 +1,18 @@
 package com.rozvi14.facialrecognition.activities;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.rozvi14.facialrecognition.FaceTrackerActivity;
 import com.rozvi14.facialrecognition.R;
 import com.rozvi14.facialrecognition.models.GenericResult;
 import com.rozvi14.facialrecognition.utils.GlobalVariables;
 import com.rozvi14.facialrecognition.utils.RequestMethods;
 import com.rozvi14.facialrecognition.utils.SaveSharedPreference;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,9 +20,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ConocidoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ConocidoActivity";
 
     //------------------------------------------repeat-------------------------------------------
     private Toolbar toolbar;
@@ -47,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //------------------------------------------repeat-------------------------------------------
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_conocido);
 
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
@@ -65,32 +54,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navView.setNavigationItemSelectedListener(this);
         //------------------------------------------repeat-------------------------------------------
 
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel =  new NotificationChannel("my-channel","my-channel", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager =  getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
-
-        FirebaseMessaging.getInstance().subscribeToTopic("my-event")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Successful";
-                        if (!task.isSuccessful()) {
-                            msg = "failed";
-                        }
-                        Log.d(TAG, msg);
-
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
-    public void accion_boton(View v){
-        Intent intent = new Intent(this, FaceTrackerActivity.class);
-        startActivity(intent);
-    }
 
     //------------------------------------------repeat-------------------------------------------
     @Override

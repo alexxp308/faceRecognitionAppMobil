@@ -25,6 +25,9 @@
             ></activity>
         <activity android:name=".WebActivity"></activity>
         <activity android:name=".FaceTrackerActivity"></activity>
+        <activity android:name=".activities.ConocidoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
 
         <service
             android:name=".MyMessagingService"
