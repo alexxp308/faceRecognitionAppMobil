@@ -4,10 +4,17 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 import com.rozvi14.facialrecognition.R;
+import com.rozvi14.facialrecognition.models.Family;
 import com.rozvi14.facialrecognition.models.GenericResult;
 import com.rozvi14.facialrecognition.utils.GlobalVariables;
 import com.rozvi14.facialrecognition.utils.RequestMethods;
@@ -17,8 +24,18 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
 
 public class ConocidoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -30,6 +47,10 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
     private ActionBarDrawerToggle toggle;
     private NavigationView navView;
     //------------------------------------------repeat-------------------------------------------
+
+    private LinearLayout miLayout = null;
+    private FloatingActionButton fab;
+    List<Family> familyList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +75,71 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
         navView.setNavigationItemSelectedListener(this);
         //------------------------------------------repeat-------------------------------------------
 
+        miLayout = findViewById(R.id.LinearLayoutConocido);
+
+        fab = findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"clic en floating");
+            }
+        });
+
+        familyList = loadFamily();
+
+        if(familyList!=null){
+            createCardsFamily();
+        }
     }
 
+
+    public GenericResult getFamily(){
+        GenericResult result = null;
+        String idClient = SaveSharedPreference.getIdClient(getApplicationContext());
+        String url = GlobalVariables.URLSERVER+"family/list/?idClient="+idClient;
+        String token = SaveSharedPreference.getToken(getApplicationContext());
+        result = RequestMethods.getMethod(url, token);
+        return result;
+    }
+
+    public List<Family> loadFamily(){
+        GenericResult result = getFamily();
+        if(result.isSuccess()){
+            Type listType = new TypeToken<ArrayList<Family>>(){}.getType();
+            Map<String, Object> resultMapping = result.getResultMapping();
+            return new Gson().fromJson(new Gson().toJson(resultMapping.get("familyList")), listType);
+        }
+        Log.e(TAG, "======= Error load family");
+        return null;
+    }
+
+    public void createCardsFamily(){
+        CardView cv = null;
+        TextView tv = null;
+        LinearLayout.LayoutParams ll = null;
+        for(Family myFamily : familyList){
+            cv = new CardView(this);//revisar this
+            ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,60 );
+            ll.setMargins(40,0,40,40);
+            cv.setLayoutParams(ll);
+
+            tv = new TextView(this);
+            ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT );
+            tv.setLayoutParams(ll);
+            tv.setGravity(Gravity.CENTER);
+            tv.setText(myFamily.getNombreConocido());
+
+            cv.addView(tv);
+            miLayout.addView(cv);
+
+            cv.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+    }
 
     //------------------------------------------repeat-------------------------------------------
     @Override

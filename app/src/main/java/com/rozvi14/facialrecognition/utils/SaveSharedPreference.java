@@ -47,4 +47,16 @@ public class SaveSharedPreference {
     public static String getUserName(Context context) {
         return getPreferences(context).getString(USERNAME_IN_PREF,"");
     }
+
+    //set idClient
+    public static void setIdClient(Context context, String idClient) {
+        SharedPreferences.Editor editor = getPreferences(context).edit();
+        editor.putString(IDCLIENT_IN_PREF, idClient);
+        editor.apply();
+    }
+
+    //Get idClient
+    public static String getIdClient(Context context) {
+        return getPreferences(context).getString(IDCLIENT_IN_PREF,"");
+    }
 }

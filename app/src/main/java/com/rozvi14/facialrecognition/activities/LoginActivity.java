@@ -87,8 +87,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         String token = (String) result.getResultMapping().get("token");
+        String idClient = (String) result.getResultMapping().get("idClient");
         //save values session
-        saveValuesSession(token,textUserName);
+        saveValuesSession(token,textUserName, idClient);
         //continue next view
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK |FLAG_ACTIVITY_CLEAR_TASK);
@@ -130,9 +131,10 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setEnabled(true);
     }
 
-    private void saveValuesSession(String token,String userName){
+    private void saveValuesSession(String token,String userName, String idClient){
         SaveSharedPreference.setLoggedIn(getApplicationContext(), true);
         SaveSharedPreference.setToken(getApplicationContext(), token);
         SaveSharedPreference.setUserName(getApplicationContext(), userName);
+        SaveSharedPreference.setIdClient(getApplicationContext(), idClient);
     }
 }
