@@ -1,12 +1,17 @@
 package com.rozvi14.facialrecognition.activities;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,16 +25,23 @@ import com.rozvi14.facialrecognition.utils.GlobalVariables;
 import com.rozvi14.facialrecognition.utils.RequestMethods;
 import com.rozvi14.facialrecognition.utils.SaveSharedPreference;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -49,8 +61,13 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
     //------------------------------------------repeat-------------------------------------------
 
     private LinearLayout miLayout = null;
+    private ConstraintLayout constraintConocido = null;
+    private ConstraintLayout contraintCreate = null;
+    private LinearLayout linearPhotos = null;
     private FloatingActionButton fab;
     List<Family> familyList = null;
+    List<String> arrayBitsPhotos = null;
+    private final int CODE_MULTIPLE_IMG_GALERY = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +94,32 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
 
         miLayout = findViewById(R.id.LinearLayoutConocido);
 
+        constraintConocido = findViewById(R.id.listConocido);
+
+        linearPhotos = findViewById(R.id.myLinearPhotos);
+
         fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG,"clic en floating");
+                constraintConocido.setVisibility(View.INVISIBLE);
+                contraintCreate.setVisibility(View.VISIBLE);
+
+                if(linearPhotos.getChildCount()>0){
+                    linearPhotos.removeAllViews();
+                }
+
+                arrayBitsPhotos = new ArrayList<>();
+
+                //1 MULTIPLE IMGS
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(intent.EXTRA_ALLOW_MULTIPLE,true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Seleccionar varias imagenes"),
+                        CODE_MULTIPLE_IMG_GALERY);
+
             }
         });
 
@@ -89,6 +127,51 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
 
         if(familyList!=null){
             createCardsFamily();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+
+        if(requestCode == CODE_MULTIPLE_IMG_GALERY && resultCode == RESULT_OK){
+            ClipData clipData = data.getClipData();
+            LinearLayout linearPhotos = findViewById(R.id.myLinearPhotos);
+            LinearLayout ln = null;
+            ImageView iv = null;
+            if(clipData != null){
+                for(int i=0; i< clipData.getItemCount(); i++){
+                    ClipData.Item item = clipData.getItemAt(i);
+                    Uri uri = item.getUri();
+
+                    if(i%2==0){
+                        ln = new LinearLayout(this);
+                        LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 200);
+                        ln.setLayoutParams(ll);
+                        ln.setOrientation(LinearLayout.HORIZONTAL);
+                        ln.setPadding(0,0,0,20);
+                        linearPhotos.addView(ln);
+                    }
+
+                    iv = new ImageView(this);
+                    LinearLayout.LayoutParams liv = new LinearLayout.LayoutParams(94, 200,1.0f);
+                    iv.setLayoutParams(liv);
+                    iv.setImageURI(uri);
+                    ln.addView(iv);
+
+                    try {
+                        InputStream imageStream = getContentResolver().openInputStream(uri);
+                        Bitmap myBitmap = BitmapFactory.decodeStream(imageStream);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] imageBytes = baos.toByteArray();
+                        Log.d(TAG, "array as string: "+Arrays.toString(imageBytes));
+                        arrayBitsPhotos.add(Arrays.toString(imageBytes));
+                    } catch (FileNotFoundException e) {
+                        Log.d(TAG,">>ERROR image to bytes");
+                    }
+                }
+            }
         }
     }
 
@@ -135,6 +218,7 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
             cv.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
+                    //constraintConocido.setVisibility(View.INVISIBLE);
 
                 }
             });

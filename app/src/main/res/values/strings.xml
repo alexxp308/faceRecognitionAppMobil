@@ -12,6 +12,7 @@
     <string name="titleNav">Menu Safe House</string>
     <string name="logout">Logout</string>
     <string name="conocido">Conocidos</string>
+    <string name="registro">Registros</string>
     <string name="principal">Principal</string>
     <string name="navigation_drawer_open">Drawer Open</string>
     <string name="navigation_drawer_close">Drawer Closed</string>
