@@ -1,18 +1,22 @@
 package com.rozvi14.facialrecognition.models;
 
-public class Family {
+public class Record {
     private Integer id;
     private Integer idClient;
+    private String dateRecord;
     private String familyName;
     private String relationship;
-    private String familyPhotos;
+    private String percent;
+    private String recordPhotoPath;
 
-    public Family(Integer id, Integer idClient, String familyName, String relationship, String familyPhotos) {
+    public Record(Integer id, Integer idClient, String dateRecord, String familyName, String relationship, String percent, String recordPhotoPath) {
         this.id = id;
         this.idClient = idClient;
+        this.dateRecord = dateRecord;
         this.familyName = familyName;
         this.relationship = relationship;
-        this.familyPhotos = familyPhotos;
+        this.percent = percent;
+        this.recordPhotoPath = recordPhotoPath;
     }
 
     public Integer getId() {
@@ -47,11 +51,27 @@ public class Family {
         this.relationship = relationship;
     }
 
-    public String getFamilyPhotos() {
-        return familyPhotos;
+    public String getPercent() {
+        return percent;
     }
 
-    public void setFamilyPhotos(String familyPhotos) {
-        this.familyPhotos = familyPhotos;
+    public void setPercent(String percent) {
+        this.percent = percent;
+    }
+
+    public String getRecordPhotoPath() {
+        return recordPhotoPath;
+    }
+
+    public void setRecordPhotoPath(String recordPhotoPath) {
+        this.recordPhotoPath = recordPhotoPath;
+    }
+
+    public String getDateRecord() {
+        return dateRecord;
+    }
+
+    public void setDateRecord(String dateRecord) {
+        this.dateRecord = dateRecord;
     }
 }

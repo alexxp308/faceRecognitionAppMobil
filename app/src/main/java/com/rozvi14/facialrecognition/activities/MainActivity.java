@@ -142,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_item_main:
                 goMain();
                 return true;
+            case R.id.nav_item_registro:
+                goRecords();
+                return true;
             default:
                 return true;
         }
@@ -185,6 +188,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void goMain(){
         if(TAG != "MainActivity"){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return;
+        }
+    }
+
+    public void goRecords(){
+        if(TAG != "RegistroActivity"){
+            Intent intent = new Intent(getApplicationContext(), RegistroActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             return;

@@ -81,13 +81,14 @@ public class LoginActivity extends AppCompatActivity {
         String textPassword = password.getText().toString();
 
         GenericResult result = validateServer(textUserName,textPassword);
+        Log.d(TAG,">>result : " + (result.isSuccess() ? "true" : "false"));
         if(!result.isSuccess()){
             onLoginFailed();
             progressDialog.dismiss();
             return;
         }
         String token = (String) result.getResultMapping().get("token");
-        String idClient = (String) result.getResultMapping().get("idClient");
+        String idClient = ((Double) result.getResultMapping().get("user"))+"";
         //save values session
         saveValuesSession(token,textUserName, idClient);
         //continue next view
@@ -122,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
         GenericResult result = null;
         Login login = new Login(textUserName,textPassword);
         String url = GlobalVariables.URLSERVER+"api/login/";
-        result = RequestMethods.postMethod(url,login);
+        result = RequestMethods.postMethod(url,login, null);
         return result;
     }
 

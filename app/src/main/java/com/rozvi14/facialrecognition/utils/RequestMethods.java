@@ -52,7 +52,7 @@ public class RequestMethods {
         return result;
     }
 
-    public static GenericResult postMethod(String url,Object object){
+    public static GenericResult postMethod(String url,Object object, String token){
         GenericResult result = new GenericResult(false,0,"",null);
         HttpPost request = new HttpPost(url);
         Log.d(TAG, "request(POST): "+url);
@@ -62,6 +62,10 @@ public class RequestMethods {
             request.setEntity(entity);
             request.addHeader("Accept", "application/json");
             request.addHeader("Content-type", "application/json");
+            if(token!=null){
+                request.addHeader("Authorization", "Token "+token);
+                Log.d(TAG, "Authorization: "+ "Token "+token);
+            }
 
             HttpResponse response = httpclient.execute(request);
             Log.d(TAG, "Response Code: "+response.getStatusLine().getStatusCode());
