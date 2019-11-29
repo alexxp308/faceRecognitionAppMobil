@@ -15,6 +15,7 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
@@ -36,6 +37,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.rozvi14.facialrecognition.models.SendFace;
 import com.rozvi14.facialrecognition.utils.GlobalVariables;
 import com.rozvi14.facialrecognition.camera.CameraSourcePreview;
 import com.rozvi14.facialrecognition.camera.GraphicOverlay;
@@ -317,16 +319,19 @@ public class FaceTrackerActivity extends AppCompatActivity {
 
             //FALTA LA MODIFICACION CUANDO ESTE HORIZONTAL
             if(faces.size()>0){
-                matrix.postRotate(90 * frame.getMetadata().getRotation());
+                //matrix.postRotate(90 * frame.getMetadata().getRotation());
                 YuvImage yuvImage = new YuvImage(frame.getGrayscaleImageData().array(), ImageFormat.NV21, frame.getMetadata().getWidth(),frame.getMetadata().getHeight(),null);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                yuvImage.compressToJpeg(new Rect(0,0,frame.getMetadata().getWidth(),frame.getMetadata().getHeight()),100,byteArrayOutputStream);
+                yuvImage.compressToJpeg(new Rect(0,0,frame.getMetadata().getWidth(),frame.getMetadata().getHeight()),80,byteArrayOutputStream);
                 byte[] jpegArray = byteArrayOutputStream.toByteArray();
 
-                Bitmap bitmap_temp = BitmapFactory.decodeByteArray(jpegArray,0,jpegArray.length);
-                myBitMap = Bitmap.createBitmap(bitmap_temp,0,0,bitmap_temp.getWidth(),bitmap_temp.getHeight(),matrix,true);
+                String encodedString = Base64.encodeToString(jpegArray, Base64.DEFAULT);
 
-                if(myBitMap!=null){
+                //Bitmap bitmap_temp = BitmapFactory.decodeByteArray(jpegArray,0,jpegArray.length);
+                //myBitMap = Bitmap.createBitmap(bitmap_temp,0,0,bitmap_temp.getWidth(),bitmap_temp.getHeight(),matrix,true);
+
+                //if(myBitMap!=null){
+                if(encodedString.length()>0){
                     for(int i=0; i<faces.size(); i++) {
                         Face thisFace = faces.valueAt(i);
                         /*float kx = 0.8f;
@@ -336,12 +341,12 @@ public class FaceTrackerActivity extends AppCompatActivity {
                         int x1 = xm - (int) (kx * thisFace.getWidth()/2);
                         int y1 = ym - (int) (ky * thisFace.getHeight()/4);*/
 
-                    /*
-                    int x = (int) thisFace.getPosition().x;
-                    int y = (int) thisFace.getPosition().y;
-                    int width = (int) thisFace.getWidth();
-                    int height = (int) thisFace.getHeight();
-                    */
+                        /*
+                        int x = (int) thisFace.getPosition().x;
+                        int y = (int) thisFace.getPosition().y;
+                        int width = (int) thisFace.getWidth();
+                        int height = (int) thisFace.getHeight();
+                        */
                         /*int kwidth = 0;
                         int kheight = 0;
                         if(x1+kx*thisFace.getWidth()>myBitMap.getWidth()){
@@ -357,16 +362,25 @@ public class FaceTrackerActivity extends AppCompatActivity {
 
                         //faceBitMap = Bitmap.createBitmap(myBitMap, x1, y1,kwidth,kheight);
 
-                        EnviarDatos enviarDatos = new EnviarDatos();
+                        //----------------------comentado 2019-11-17------------------------
+
+                        /*EnviarDatos enviarDatos = new EnviarDatos();
                         enviarDatos.setMyBitmap(myBitMap);
                         enviarDatos.setIdFace(thisFace.getId());
                         enviarDatos.setOperacion(1);
-                        //enviarDatos.execute();
                         String result = enviarDatos.doInBackground();
-                        FaceRecognition myface = enviarDatos.getMyface();
-                        //String emotion_result = enviarDatos.getEmotion();
-                        emocionesFace.put(thisFace.getId(),myface.getName()+": "+myface.getPercent());
+                        FaceRecognition myface = enviarDatos.getMyface();*/
 
+                        //----------------------comentado 2019-11-17------------------------
+
+                        SendFace sendFace = new SendFace(encodedString,getApplicationContext());
+                        FaceRecognition myface = new FaceRecognition("0","");
+                        String result = sendFace.doInBackground();
+                        if(result == "OK"){
+                            myface = sendFace.getMyface();
+                        }
+
+                        emocionesFace.put(thisFace.getId(),myface.getName()+": "+myface.getPercent());
                     }
                 }else{
                     Log.w("EMOTION","FRAME VACIO");

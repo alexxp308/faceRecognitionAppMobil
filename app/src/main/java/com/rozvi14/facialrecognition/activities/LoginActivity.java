@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.rozvi14.facialrecognition.R;
@@ -70,12 +71,16 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        final ProgressDialog progressDialog = new ProgressDialog(this);
+        //ProgressBar miProgress = findViewById(R.id.progress_loader);
+        //miProgress.setVisibility(View.VISIBLE);
+        //miProgress.setIndeterminate(false);
+
+        /*ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Autenticando...");
+        progressDialog.setIndeterminate(false);
         progressDialog.setCancelable(false);
-        progressDialog.show();
+        progressDialog.show();*/
 
         String textUserName = userName.getText().toString();
         String textPassword = password.getText().toString();
@@ -84,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG,">>result : " + (result.isSuccess() ? "true" : "false"));
         if(!result.isSuccess()){
             onLoginFailed();
-            progressDialog.dismiss();
+            //miProgress.setVisibility(View.GONE);
             return;
         }
         String token = (String) result.getResultMapping().get("token");
@@ -96,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK |FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
-        progressDialog.dismiss();
+        //miProgress.setVisibility(View.INVISIBLE);
     }
 
     private boolean validate(){

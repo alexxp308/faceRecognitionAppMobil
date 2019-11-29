@@ -183,10 +183,10 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
                 String relationship = textRelacion.getText().toString();
 
                 if(isCreate){
-                    /*if(arrayBitsPhotos.size()<5){
+                    if(arrayBitsPhotos.size()<5){
                         Toast.makeText(getBaseContext(),"Debes subir mas de 5 fotos",Toast.LENGTH_LONG).show();
                         return;
-                    }*/
+                    }
 
 
                     CreateFamily miFamily = new CreateFamily(familyName,relationship,arrayBitsPhotos);

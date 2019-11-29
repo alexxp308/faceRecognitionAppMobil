@@ -16,7 +16,7 @@
     <com.rozvi14.facialrecognition.camera.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <com.rozvi14.facialrecognition.camera.GraphicOverlay
             android:id="@+id/faceOverlay"
