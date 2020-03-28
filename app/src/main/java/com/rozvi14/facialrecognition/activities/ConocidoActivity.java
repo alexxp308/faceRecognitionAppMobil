@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Base64;
@@ -60,6 +61,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.google.gson.reflect.TypeToken;
+import com.rozvi14.facialrecognition.utils.UtilMethods;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -244,6 +246,8 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
             LinearLayout linearPhotos = findViewById(R.id.myLinearPhotos);
             LinearLayout ln = null;
             ImageView iv = null;
+            Bitmap bitmap = null;
+            ByteArrayOutputStream byteArrayOutputStream = null;
             if(clipData != null){
                 for(int i=0; i< clipData.getItemCount(); i++){
                     ClipData.Item item = clipData.getItemAt(i);
@@ -265,8 +269,16 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
                     ln.addView(iv);
 
                     try {
-                        InputStream imageStream = getContentResolver().openInputStream(uri);
 
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                        bitmap = UtilMethods.getResizedBitmap(bitmap,300);
+                        byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream .toByteArray();
+                        String encodedString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        arrayBitsPhotos.add(encodedString);
+
+                        /*InputStream imageStream = getContentResolver().openInputStream(uri);
                         byte[] bytes;
                         byte[] buffer = new byte[8192];
                         int bytesRead;
@@ -280,8 +292,8 @@ public class ConocidoActivity extends AppCompatActivity implements NavigationVie
                         }
                         bytes = output.toByteArray();
                         String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
-                        arrayBitsPhotos.add(encodedString);
-                    } catch (FileNotFoundException e) {
+                        arrayBitsPhotos.add(encodedString);*/
+                    } catch (Exception e) {
                         Log.d(TAG,">>ERROR image to bytes");
                     }
                 }

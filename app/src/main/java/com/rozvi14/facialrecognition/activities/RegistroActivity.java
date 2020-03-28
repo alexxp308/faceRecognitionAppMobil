@@ -169,7 +169,7 @@ public class RegistroActivity extends AppCompatActivity implements NavigationVie
             tv.setGravity(Gravity.CENTER);
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP,28);
             tv.setTextColor(Color.WHITE);
-            tv.setText(myRecord.getDateRecord());
+            tv.setText(myRecord.getDateRecord().replace("T"," ").replace("Z",""));
 
             cv.addView(tv);
 
@@ -204,7 +204,7 @@ public class RegistroActivity extends AppCompatActivity implements NavigationVie
                         }
                     }
 
-                    txtfecha.setText(recordSelected.getDateRecord());
+                    txtfecha.setText(recordSelected.getDateRecord().replace("T"," ").replace("Z",""));
                     nombreFamiliar.setText(recordSelected.getFamilyName());
                     relacionFamiliar.setText(recordSelected.getRelationship());
                     porcentaje.setText(recordSelected.getPercent());
